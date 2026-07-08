@@ -81,6 +81,13 @@ echo "   ✅ Done"
 
 echo ""
 
+# Apply Fix 5: Disable Moto Smart 5G
+echo "🔧 Fix 5: Disabling aggressive Moto Smart 5G..."
+adb shell pm disable-user --user 0 com.motorola.smart5g >/dev/null 2>&1
+echo "   ✅ Done (If device is Motorola)"
+
+echo ""
+
 # Verify
 echo "✅ Verification:"
 echo "   wifi_sleep_policy = $(adb shell settings get global wifi_sleep_policy)"

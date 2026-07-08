@@ -46,6 +46,10 @@ This causes the hotspot to silently disconnect.
 
 Some OEMs (like Motorola) have a UI bug where the Hotspot settings show "Turn off hotspot automatically" as disabled, but the core Android system still enforces a default inactivity timeout. We bypass this by explicitly setting `soft_ap_timeout_enabled` and `hotspot_turn_off_timer` to `0`.
 
+### 4. Moto Smart 5G / Aggressive Network Optimizers
+
+Certain devices (like Motorola) use background services (e.g., `com.motorola.smart5g`) that actively monitor the network. When the screen turns off, this service forces a drop from 5G to 4G to save battery, which interrupts the tethering interface and kills the hotspot. We fix this by disabling the aggressive optimizer package.
+
 ## 🔧 Fix
 
 ### Prerequisites
@@ -57,7 +61,7 @@ Some OEMs (like Motorola) have a UI bug where the Hotspot settings show "Turn of
 > **How to enable USB Debugging:**
 > `Settings → About Phone → Tap "Build Number" 7 times → Settings → System → Developer Options → USB Debugging → ON`
 
-### Quick Fix (4 Commands)
+### Quick Fix (5 Commands)
 
 Connect your phone via USB and run:
 
@@ -73,6 +77,9 @@ adb shell settings put global soft_ap_timeout_enabled 0
 
 # Fix 4: Disable OEM specific (e.g., Motorola) hotspot turn off timer
 adb shell settings put system hotspot_turn_off_timer 0
+
+# Fix 5: Disable aggressive Moto Smart 5G battery saver that drops tethering
+adb shell pm disable-user --user 0 com.motorola.smart5g
 ```
 
 ### Or Use the Script

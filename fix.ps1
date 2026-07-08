@@ -82,6 +82,13 @@ Write-Host "   ✅ Done" -ForegroundColor Green
 
 Write-Host ""
 
+# Apply Fix 5
+Write-Host "🔧 Fix 5: Disabling aggressive Moto Smart 5G..." -ForegroundColor Cyan
+& $adbPath shell pm disable-user --user 0 com.motorola.smart5g 2>$null
+Write-Host "   ✅ Done (If device is Motorola)" -ForegroundColor Green
+
+Write-Host ""
+
 # Verify
 Write-Host "✅ Verification:" -ForegroundColor Green
 $verifyPolicy = (& $adbPath shell settings get global wifi_sleep_policy).Trim()
