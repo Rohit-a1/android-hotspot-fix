@@ -89,6 +89,13 @@ Write-Host "   ✅ Done (If device is Motorola)" -ForegroundColor Green
 
 Write-Host ""
 
+# Apply Fix 6
+Write-Host "🔧 Fix 6: Disabling background Wi-Fi scanning..." -ForegroundColor Cyan
+& $adbPath shell settings put global wifi_scan_always_enabled 0
+Write-Host "   ✅ Done" -ForegroundColor Green
+
+Write-Host ""
+
 # Verify
 Write-Host "✅ Verification:" -ForegroundColor Green
 $verifyPolicy = (& $adbPath shell settings get global wifi_sleep_policy).Trim()

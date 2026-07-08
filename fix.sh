@@ -88,6 +88,13 @@ echo "   ✅ Done (If device is Motorola)"
 
 echo ""
 
+# Apply Fix 6: Disable Wi-Fi scanning
+echo "🔧 Fix 6: Disabling background Wi-Fi scanning..."
+adb shell settings put global wifi_scan_always_enabled 0
+echo "   ✅ Done"
+
+echo ""
+
 # Verify
 echo "✅ Verification:"
 echo "   wifi_sleep_policy = $(adb shell settings get global wifi_sleep_policy)"

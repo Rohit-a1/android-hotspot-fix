@@ -50,6 +50,10 @@ Some OEMs (like Motorola) have a UI bug where the Hotspot settings show "Turn of
 
 Certain devices (like Motorola) use background services (e.g., `com.motorola.smart5g`) that actively monitor the network. When the screen turns off, this service forces a drop from 5G to 4G to save battery, which interrupts the tethering interface and kills the hotspot. We fix this by disabling the aggressive optimizer package.
 
+### 5. 5GHz DFS (Dynamic Frequency Selection) Drops
+
+If your hotspot is set to 5GHz, Android may suddenly drop the connection or shut down the AP to avoid interfering with radar signals (DFS regulations). Switching the AP band to 2.4GHz prevents these random drops.
+
 ## 🔧 Fix
 
 ### Prerequisites
@@ -61,7 +65,7 @@ Certain devices (like Motorola) use background services (e.g., `com.motorola.sma
 > **How to enable USB Debugging:**
 > `Settings → About Phone → Tap "Build Number" 7 times → Settings → System → Developer Options → USB Debugging → ON`
 
-### Quick Fix (5 Commands)
+### Quick Fix (6 Commands)
 
 Connect your phone via USB and run:
 
@@ -80,6 +84,9 @@ adb shell settings put system hotspot_turn_off_timer 0
 
 # Fix 5: Disable aggressive Moto Smart 5G battery saver that drops tethering
 adb shell pm disable-user --user 0 com.motorola.smart5g
+
+# Fix 6: Disable background Wi-Fi scanning
+adb shell settings put global wifi_scan_always_enabled 0
 ```
 
 ### Or Use the Script
@@ -134,17 +141,24 @@ adb shell settings list global | grep low_power
 
 Confirmed battery saver was OFF — so the issue was specifically `wifi_sleep_policy` + Doze mode.
 
-## 📱 Additional Manual Fix
+## 📱 Additional Manual Fixes
 
-On your phone, also check:
+On your phone, ensure the following settings are configured:
 
+1. **Disable Hotspot Timeout:**
 ```
 Settings → Network & Internet → Hotspot & Tethering → Wi-Fi Hotspot
 → ⚙️ (Settings) → "Turn off hotspot automatically" → OFF
 ```
 
-And disable aggressive battery optimization:
+2. **Switch to 2.4GHz Band (Crucial for Stability):**
+```
+Settings → Network & Internet → Hotspot & Tethering → Wi-Fi Hotspot
+→ AP Band → Select "2.4 GHz"
+(Or enable "Extend Compatibility" if 2.4GHz isn't explicitly listed)
+```
 
+3. **Disable Aggressive Battery Optimization:**
 ```
 Settings → Battery → Adaptive Battery → OFF (optional)
 ```
