@@ -42,6 +42,10 @@ Android's **Doze Mode** is a battery optimization feature that activates when th
 
 This causes the hotspot to silently disconnect.
 
+### 3. Hidden System Auto-Timeout (Even if UI says "Never")
+
+Some OEMs (like Motorola) have a UI bug where the Hotspot settings show "Turn off hotspot automatically" as disabled, but the core Android system still enforces a default inactivity timeout. We bypass this by explicitly setting `soft_ap_timeout_enabled` and `hotspot_turn_off_timer` to `0`.
+
 ## 🔧 Fix
 
 ### Prerequisites
@@ -53,7 +57,7 @@ This causes the hotspot to silently disconnect.
 > **How to enable USB Debugging:**
 > `Settings → About Phone → Tap "Build Number" 7 times → Settings → System → Developer Options → USB Debugging → ON`
 
-### Quick Fix (2 Commands)
+### Quick Fix (4 Commands)
 
 Connect your phone via USB and run:
 
@@ -63,6 +67,12 @@ adb shell settings put global wifi_sleep_policy 0
 
 # Fix 2: Whitelist tethering from Doze mode
 adb shell dumpsys deviceidle whitelist +com.google.android.networkstack.tethering
+
+# Fix 3: Disable Android default soft AP timeout
+adb shell settings put global soft_ap_timeout_enabled 0
+
+# Fix 4: Disable OEM specific (e.g., Motorola) hotspot turn off timer
+adb shell settings put system hotspot_turn_off_timer 0
 ```
 
 ### Or Use the Script

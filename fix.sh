@@ -67,6 +67,20 @@ echo "   $RESULT"
 
 echo ""
 
+# Apply Fix 3: Disable Android default soft AP timeout
+echo "🔧 Fix 3: Disabling default soft AP timeout..."
+adb shell settings put global soft_ap_timeout_enabled 0
+echo "   ✅ Done"
+
+echo ""
+
+# Apply Fix 4: Disable OEM specific hotspot turn off timer
+echo "🔧 Fix 4: Disabling OEM hotspot turn off timer..."
+adb shell settings put system hotspot_turn_off_timer 0
+echo "   ✅ Done"
+
+echo ""
+
 # Verify
 echo "✅ Verification:"
 echo "   wifi_sleep_policy = $(adb shell settings get global wifi_sleep_policy)"

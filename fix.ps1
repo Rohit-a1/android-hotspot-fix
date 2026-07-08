@@ -68,6 +68,20 @@ Write-Host "   $result"
 
 Write-Host ""
 
+# Apply Fix 3
+Write-Host "🔧 Fix 3: Disabling Android default soft AP timeout..." -ForegroundColor Cyan
+& $adbPath shell settings put global soft_ap_timeout_enabled 0
+Write-Host "   ✅ Done" -ForegroundColor Green
+
+Write-Host ""
+
+# Apply Fix 4
+Write-Host "🔧 Fix 4: Disabling OEM hotspot turn off timer..." -ForegroundColor Cyan
+& $adbPath shell settings put system hotspot_turn_off_timer 0
+Write-Host "   ✅ Done" -ForegroundColor Green
+
+Write-Host ""
+
 # Verify
 Write-Host "✅ Verification:" -ForegroundColor Green
 $verifyPolicy = (& $adbPath shell settings get global wifi_sleep_policy).Trim()
